@@ -1,0 +1,15 @@
+#lang racket
+
+(require web-server/servlet
+         web-server/servlet-env)
+
+(define (hello-servlet req)
+  (response/xexpr
+   #:preamble #"<!DOCTYPE html>"
+   `(html
+     (head)
+     (body
+      (p "Hello, world!")))))
+
+; start serving
+(serve/servlet hello-servlet)

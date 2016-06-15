@@ -1,0 +1,25 @@
+#lang racket
+
+(require web-server/servlet
+         web-server/servlet-env)
+
+;; serve files from directory
+(define root (current-directory))
+
+; handler for static files
+(define (hello-servlet req)
+     ; construct response
+     (response
+      200
+      #"OK"
+      (current-seconds)
+      TEXT/HTML-MIME-TYPE
+      '()
+      
+      (λ (client-out)
+        (write-string "Hello, dynamic!" client-out))))
+       
+; start serving
+(serve/servlet hello-servlet
+               #:servlet-path "/hello"
+               #:extra-files-paths (list (build-path root)))

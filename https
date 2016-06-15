@@ -1,0 +1,27 @@
+#lang racket
+
+(require web-server/servlet
+         web-server/servlet-env)
+
+(define root (path->string (current-directory)))
+
+; path to server certficate
+(define cert-path (string-append root "/server-cert.pem"))
+
+; path to private key
+(define key-path (string-append root "/private-key.pem"))
+
+(define (hello-servlet req)
+  (response/xexpr
+   #:preamble #"<!DOCTYPE html>"
+   `(html
+     (head)
+     (body
+      (p "Hello, world!")))))
+
+(serve/servlet hello-servlet
+               #:servlet-regexp #rx""
+               #:port 443
+               #:ssl? #t
+               #:ssl-cert cert-path
+               #:ssl-key key-path)
